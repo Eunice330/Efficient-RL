@@ -1,0 +1,6 @@
+cython
+numpy
+scipy
+mpmath
+numpydoc
+

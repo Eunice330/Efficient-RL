@@ -1,8 +1,8 @@
 import torch
-import mpc_demo
-from mpc_demo import mpc
+from mpcpytorch import mpc_demo
 from mpc_demo.mpc import QuadCost, LinDx, GradMethods
 from mpc_demo.env_dx import pendulum
+from mpc_demo import mpc
 
 import numpy as np
 import numpy.random as npr

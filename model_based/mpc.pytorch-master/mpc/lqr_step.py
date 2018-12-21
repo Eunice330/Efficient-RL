@@ -310,8 +310,13 @@ class LQRStep(Function):
                 kt, Qt_uu_free_LU, If, n_qp_iter = pnqp(
                     Qt_uu, qt_u, lb, ub,
                     x_init=prev_kt, n_iter=20)
+
                 #print('kt after function pnqp', kt)
                 #print('Qt uu free LU after function pnqp', Qt_uu_free_LU)
+                if np.isnan(kt).any():
+                    print("Error!")
+                if np.isnan(Qt_uu_free_LU).any():
+                    print("error!")
                 if self.verbose > 1:
                     print('  + n_qp_iter: ', n_qp_iter+1)
                 n_total_qp_iter += 1+n_qp_iter
@@ -336,7 +341,10 @@ class LQRStep(Function):
             vtp1 = qt_x + Qt_xu.bmm(kt.unsqueeze(2)).squeeze(2) + \
                 Kt_T.bmm(qt_u.unsqueeze(2)).squeeze(2) + \
                 Kt_T.bmm(Qt_uu).bmm(kt.unsqueeze(2)).squeeze(2)
-
+            if np.isnan(Vtp1).any():
+                print("Error!")
+            if np.isnan(vtp1).any():
+                print("error!")
         return Ks, ks, LqrBackOut(n_total_qp_iter=n_total_qp_iter)
 
 

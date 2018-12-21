@@ -72,8 +72,8 @@ class gp_dynamics_dx():
                 [new_x_t_1], new_xu_t_1_std = self.all_gps[dim].predict(xu, n=0) #pred
                 grad_xu_t, err_grad_y_t = self.all_gps[dim].predict(xu_copy, n=flat) #grad
 
-                #add sample
-                #new_x_t_1 = new_x_t_1/1000 # scale for debug
+                # add sample
+                # new_x_t_1 = new_x_t_1/1000 # scale for debug
                 if new_x_t_1 >1:
                     new_x_t_1 = 1
                 elif new_x_t_1 < -1:
@@ -95,4 +95,3 @@ class gp_dynamics_dx():
             #print('used time in gp_dynamics', end - start)
         
         return batch_Ft, batch_new_x_t
-

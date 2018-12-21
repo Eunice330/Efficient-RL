@@ -20,7 +20,7 @@ from tqdm import tqdm
 params = torch.tensor((10., 1., 1.))
 dx = pendulum.PendulumDx(params, simple=True)
 
-n_batch, T, mpc_T = 8, 5, 10
+n_batch, T, mpc_T = 8, 5, 10 #batch size, total time, mpc plan horizon
 
 def uniform(shape, low, high):
     r = high-low

@@ -40,15 +40,15 @@ class gp_dynamics_dx():
         #start = time.time()
         x = np.array(x)
         u = np.array(u)
-        print('input x shape', x.shape)
-        print('input u shape', u.shape)
+        # print('input x shape', x.shape)
+        # print('input u shape', u.shape)
 
         batch_n = x.shape[0]
         batch_Ft, batch_new_x_t = [], []
         for b in range(batch_n):
             start = time.time()
             xu = np.concatenate((x[b],u[b]), 0)
-            print('xu into gp', xu)
+            # print('xu into gp', xu)
             #print('xu shape', xu.shape[0])
             d = xu.shape[0] 
             d1 = x.shape[1] 
@@ -83,7 +83,7 @@ class gp_dynamics_dx():
             
             batch_Ft.append(Ft)
             batch_new_x_t.append(new_x_t)
-            print('pred dynamic of gp', new_x_t)
+            # print('pred dynamic of gp', new_x_t)
             end = time.time()
             #print('used time in gp_dynamics', end - start)
         

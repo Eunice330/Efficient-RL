@@ -263,10 +263,11 @@ class MPC(Module):
 
         n_not_improved = 0
         x = x_init
-        for i in range(self.lqr_iter):
+        for i in range(self.lqr_iter):#use lqr to find best trajectory:forward part
             #u = Variable(util.detach_maybe(u), requires_grad=True)
             # Linearize the dynamics around the current trajectory.
             x = util.get_traj(self.T, u, x_init=x_init, dynamics=dx)
+            print("lqr iter",i)
             if isinstance(dx, LinDx):
                print('lindx is true')
                F, f = dx.F, dx.f
@@ -282,8 +283,10 @@ class MPC(Module):
                 C, c, _ = self.approximate_cost(x, u, cost, diff=True)
 
             #C, c, _ = self.approximate_cost(x, u, cost, diff=True) 
-            print('lqr iter', i ,'C', np.array(C).shape)
-            print('lqr iter', i, 'c', np.array(c).shape)
+            # print('lqr iter', i ,'C', np.array(C))
+            # print('lqr iter', i, 'c', np.array(c))
+            # print('lqr iter', i, 'F', np.array(F))
+            # print('lqr iter', i, 'f', np.array(f))
             x, u, _lqr = self.solve_lqr_subproblem(
                 x_init, C, c, F, f, cost, dx, x, u)
             back_out, for_out = _lqr.back_out, _lqr.for_out
@@ -490,7 +493,7 @@ class MPC(Module):
         global gp_cost
 
         our_gp_cost = gp_cost.GP_cost(self.train_x, self.train_r)
-        print('our gp cost is ', our_gp_cost)
+        #print('our gp cost is ', our_gp_cost)
         
         with torch.enable_grad():
             #tau = torch.cat((x, u), dim=2).data
@@ -538,6 +541,7 @@ More details: https://github.com/locuslab/mpc.pytorch/issues/12
             #hessians = torch.stack(hessians, dim=0)
             if not diff:
                 return hessians.data, grads.data, costs.data
+            print("HESSIANS, GRAD, COSTS")
             return hessians, grads, costs
 
     # @profile
@@ -550,7 +554,7 @@ More details: https://github.com/locuslab/mpc.pytorch/issues/12
        
         T = self.T
 
-        if self.grad_method == GradMethods.ANALYTIC:
+        if self.grad_method == GradMethods.ANALYTIC:   #GP MODEL
             #_u = Variable(u[:-1].view(-1, self.n_ctrl), requires_grad=True)
             #_x = Variable(x[:-1].contiguous().view(-1, self.n_state),
             #              requires_grad=True)
@@ -570,13 +574,14 @@ More details: https://github.com/locuslab/mpc.pytorch/issues/12
 
             #R, S = dynamics.grad_input(_x, _u)
             #dynamics = gp_dynamic.gp_dynamics_dx(train_X = self.train_x, train_Y = self.train_y)
+            # eliminate the last state action pair when calculating grads of dynamics
             F, f = [], []
-            for i in range(T):
+            for i in range(T-1):
                 Ft, new_x_t = dynamics.grad_input(x[i], u[i])
                 F.append(Ft)
-              
                 f.append(new_x_t)
-            print('gp dynamic F', np.array(F).shape)    
+                print("F and f",F," ",f)
+            # print('gp dynamic F', np.array(F).shape)
             #[T, n_batch, n_state]
             #f = f.view(self.T-1, n_batch, self.n_state)
 
@@ -659,13 +664,13 @@ More details: https://github.com/locuslab/mpc.pytorch/issues/12
                         assert False
 
                     Ft = torch.cat((Rt, St), 2)
-                    print('Ft shape', Ft.shape)
+                    # print('Ft shape', Ft.shape)
                     F.append(Ft)
 
                     if not diff:
                         xt, ut, new_x = xt.data, ut.data, new_x.data
                     ft = new_x - util.bmv(Rt, xt) - util.bmv(St, ut)
-                    print('ft shape', ft.shape)
+                    # print('ft shape', ft.shape)
                     f.append(ft)
                     
 

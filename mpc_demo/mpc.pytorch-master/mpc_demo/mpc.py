@@ -263,7 +263,7 @@ class MPC(Module):
             else:
                 C, c, _ = self.approximate_cost(
                     x, util.detach_maybe(u), cost, diff=False)
-
+            print("lqr iter",i)
             x, u, _lqr = self.solve_lqr_subproblem(
                 x_init, C, c, F, f, cost, dx, x, u)
             back_out, for_out = _lqr.back_out, _lqr.for_out

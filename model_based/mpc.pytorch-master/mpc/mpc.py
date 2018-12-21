@@ -541,7 +541,7 @@ More details: https://github.com/locuslab/mpc.pytorch/issues/12
             #hessians = torch.stack(hessians, dim=0)
             if not diff:
                 return hessians.data, grads.data, costs.data
-            print("HESSIANS, GRAD, COSTS")
+            # print("HESSIANS, GRAD, COSTS")
             return hessians, grads, costs
 
     # @profile
@@ -580,6 +580,7 @@ More details: https://github.com/locuslab/mpc.pytorch/issues/12
                 Ft, new_x_t = dynamics.grad_input(x[i], u[i])
                 F.append(Ft)
                 f.append(new_x_t)
+                print("x",x[i],"u",u[i])
                 print("F and f",F," ",f)
             # print('gp dynamic F', np.array(F).shape)
             #[T, n_batch, n_state]

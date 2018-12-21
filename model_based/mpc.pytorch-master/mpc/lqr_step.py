@@ -325,7 +325,10 @@ class LQRStep(Function):
                     Kt = -Qt_ux_.btrisolve(*Qt_uu_free_LU)
 
             Kt_T = Kt.transpose(1,2)
-
+            if np.isnan(Kt).any():
+                print("Error!")
+            if np.isnan(kt).any():
+                print("error!")
             Ks.append(Kt)
             ks.append(kt)
 

@@ -35,7 +35,7 @@ class gp_dynamics_dx():
         for dim in range(self.Y.shape[1]):
             self.all_gps[dim].add_data(self.X, self.Y[:,dim])
             #self.all_gps[dim].optimize_hyperparameters(verbose=True)
-    
+        print(1)
     def grad_input(self, x, u): # get next states and grads
         #start = time.time()
         x = np.array(x)
@@ -71,15 +71,22 @@ class gp_dynamics_dx():
                 xu_copy = [xu for i in range(xu.shape[0])]
                 [new_x_t_1], new_xu_t_1_std = self.all_gps[dim].predict(xu, n=0) #pred
                 grad_xu_t, err_grad_y_t = self.all_gps[dim].predict(xu_copy, n=flat) #grad
+
                 #add sample
                 #new_x_t_1 = new_x_t_1/1000 # scale for debug
+                if new_x_t_1 >1:
+                    new_x_t_1 = 1
+                elif new_x_t_1 < -1:
+                    new_x_t_1 = 1
                 new_x_t.append(new_x_t_1)
  
                 if len(new_x_t) == d1:
                    self.all_gps[dim].add_data(xu, new_x_t[dim]) #add new generated data on each dim
 
-                Ft.append(grad_xu_t/1000)#scale for debug
-                #Ft.append(grad_xu_t)
+                # Ft.append(grad_xu_t/1000)#scale for debug
+                #add clip
+                np.clip(grad_xu_t, -1, 1, grad_xu_t)
+                Ft.append(grad_xu_t)
             
             batch_Ft.append(Ft)
             batch_new_x_t.append(new_x_t)

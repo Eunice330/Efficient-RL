@@ -65,10 +65,12 @@ class GP_cost():
             self.gp.add_data(xu, ct)
             #self.gp.optimize_hyperparameters(verbose=True)
             #add sample
-            grad_xu_t_of_ct, err_grad_c_t = self.gp.predict(xu_copy, n=flat) 
+            grad_xu_t_of_ct, err_grad_c_t = self.gp.predict(xu_copy, n=flat)
             hess_xu_t_of_ct, err_hess_c_t = self.gp.predict(xu_copy_copy, n=H_flat)
-            grad_xu_t_of_ct = grad_xu_t_of_ct/1000 #scale for debug
-            hess_xu_t_of_ct = hess_xu_t_of_ct/1000 #scale for debug
+            # grad_xu_t_of_ct = grad_xu_t_of_ct/1000 #scale for debug
+            # hess_xu_t_of_ct = hess_xu_t_of_ct/1000 #scale for debug
+            np.clip(grad_xu_t_of_ct, -1, 1, grad_xu_t_of_ct)
+            np.clip(hess_xu_t_of_ct, -1, 1, hess_xu_t_of_ct)
             hess = np.reshape(hess_xu_t_of_ct, [d, d])
             #print('one hess shape', hess.shape)
             batch_Ct.append(ct)

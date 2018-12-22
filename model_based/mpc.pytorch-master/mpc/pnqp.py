@@ -44,6 +44,7 @@ def pnqp(H, q, lower, upper, x_init=None, n_iter=20):
         H_ = H.clone()
         #print('not Hff I', not_Hff_I, not_Hff_I.dtype)
         not_Hff_I = not_Hff_I.long()
+        not_Hff_I = not_Hff_I.type(torch.uint8)
         H_[not_Hff_I] = 0.0
         H_ += pnqp_I
 

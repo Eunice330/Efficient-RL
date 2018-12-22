@@ -1438,6 +1438,14 @@ class GaussianProcess(object):
                 scipy.diag(err_y**2.0) +
                 self.diag_factor * sys.float_info.epsilon * scipy.eye(len(y))
             )
+            # add regularization
+            for i in range(10):
+                try:
+                    self.L = scipy.linalg.cholesky(K_tot, lower=True)
+                    break
+                except numpy.linalg.linalg.LinAlgError:
+                    K_tot = K_tot + 10 * np.eye(K_tot.shape[0])
+            # add end
             self.L = scipy.linalg.cholesky(K_tot, lower=True)
             # Need to make the mean-subtracted y that appears in the expression
             # for alpha:

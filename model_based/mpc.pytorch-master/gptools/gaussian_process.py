@@ -30,6 +30,7 @@ import scipy.optimize
 import scipy.stats
 import numpy.random
 import numpy.linalg
+import numpy as np
 import sys
 import warnings
 import traceback

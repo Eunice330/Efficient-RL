@@ -1,4 +1,5 @@
-gptools
+revision version of gptools: adding some features for mpc
+original message below
 =======
 
 Gaussian processes with arbitrary derivative constraints and predictions.

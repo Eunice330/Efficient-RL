@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 
-class gp_dynamics_dx():
+class gp_dynamics_dx(object):
     def __init__(self, train_X=None, train_Y=None):
         #super().__init__()
 

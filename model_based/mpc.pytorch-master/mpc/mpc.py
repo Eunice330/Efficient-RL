@@ -17,8 +17,6 @@ from .pnqp import pnqp
 from .lqr_step import LQRStep
 from .dynamics import CtrlPassthroughDynamics
 
-from mpc.env_dx import gp_dynamic
-from mpc.env_dx import gp_cost
 
 QuadCost = namedtuple('QuadCost', 'C c')
 LinDx = namedtuple('LinDx', 'F f')
@@ -336,8 +334,8 @@ class MPC(Module):
             #F, f = dx.F, dx.f
         #else:
             #F, f = self.linearize_dynamics(x, u, dx, diff=True)
-        print('best x shape', x.shape)
-        print('best u shape', u.shape)
+        # print('best x shape', x.shape)
+        # print('best u shape', u.shape)
         F, f = self.linearize_dynamics(x, u, dx, diff=True)
 
         if isinstance(cost, QuadCost):
@@ -490,9 +488,9 @@ class MPC(Module):
             return x, u, _lqr
 
     def approximate_cost(self, x, u, Cf, diff=True):
-        global gp_cost
+        # global gp_cost
 
-        our_gp_cost = gp_cost.GP_cost(self.train_x, self.train_r)
+        our_gp_cost = Cf
         #print('our gp cost is ', our_gp_cost)
         
         with torch.enable_grad():
@@ -515,7 +513,7 @@ More details: https://github.com/locuslab/mpc.pytorch/issues/12
                 costs.append(batch_Ct)
                 grads.append(batch_grads)
                 hessians.append(batch_hessians)
-            print('all batch costs', np.array(costs).shape) 
+            # print('all batch costs', np.array(costs).shape)
                 #tau_t = tau[t]
                 #if self.slew_rate_penalty is not None:
                 #    cost = Cf(tau_t) + (slew_penalty[t-1] if t > 0 else 0)
@@ -580,8 +578,8 @@ More details: https://github.com/locuslab/mpc.pytorch/issues/12
                 Ft, new_x_t = dynamics.grad_input(x[i], u[i])
                 F.append(Ft)
                 f.append(new_x_t)
-                print("x",x[i],"u",u[i])
-                print("F and f",F," ",f)
+                # print("x",x[i],"u",u[i])
+                # print("F and f",F," ",f)
             # print('gp dynamic F', np.array(F).shape)
             #[T, n_batch, n_state]
             #f = f.view(self.T-1, n_batch, self.n_state)

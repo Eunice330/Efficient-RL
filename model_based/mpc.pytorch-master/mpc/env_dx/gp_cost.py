@@ -8,7 +8,7 @@ import scipy
 import matplotlib.pyplot as plt
 import numpy as np
 
-class GP_cost():
+class GP_cost(object):
     def __init__(self, train_X=None, train_R=None):
         super().__init__()
 
@@ -25,7 +25,7 @@ class GP_cost():
         self.k_noise = gptools.DiagonalNoiseKernel(noise_bound=[0, 4, 1 ,2])
         self.gp_noise = gptools.GaussianProcess(self.k_SE, noise_k=self.k_noise)
         self.gp = gptools.GaussianProcess(
-                  gptools.SquaredExponentialKernel(hyperprior=self.hp*self.hp, num_dim=self.num_dim)) 
+                  gptools.SquaredExponentialKernel(hyperprior=self.hp*self.hp, num_dim=self.num_dim))
         self.gp.add_data(self.X, self.R) #add init data for gp
 
     def get_cost(self, x, u): #get costs, grads, hessians

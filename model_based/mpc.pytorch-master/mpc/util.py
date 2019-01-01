@@ -155,7 +155,7 @@ def get_traj(T, u, x_init, dynamics):
             #print('new x', new_x)    
             x.append(np.array(new_x))
     #x = torch.stack(x, dim=0)
-    print('traj x', np.array(x).shape)
+    # print('traj x', np.array(x).shape)
     
     return x
 

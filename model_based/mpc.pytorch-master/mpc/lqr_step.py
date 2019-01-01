@@ -385,6 +385,7 @@ class LQRStep(Function):
                 #print('alphas', alphas)
                 #print('kt', kt)
                 new_ut = util.bmv(Kt, dxt) + ut + torch.diag(alphas).mm(kt)
+
                 # print('new ut after line 377', new_ut)
                 # if 1:
                 #     print(1)

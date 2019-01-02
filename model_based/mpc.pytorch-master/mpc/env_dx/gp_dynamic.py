@@ -29,11 +29,12 @@ class gp_dynamics_dx(object):
         self.k_SE = gptools.SquaredExponentialKernel(hyperprior=self.hp)
         self.k_noise = gptools.DiagonalNoiseKernel(noise_bound=[0, 4, 1 ,2])
         self.gp_noise = gptools.GaussianProcess(self.k_SE, noise_k=self.k_noise)
-        self.gp = gptools.GaussianProcess(
-                  gptools.SquaredExponentialKernel(hyperprior=self.hp*self.hp*self.hp1, num_dim=self.num_dim)) # 3 is the dimention of x
-        self.all_gps = [self.gp for i in range(self.Y.shape[1])]
-        for dim in range(self.Y.shape[1]):
-            self.all_gps[dim].add_data(self.X, self.Y[:,dim])
+        # self.gp = gptools.GaussianProcess(
+        #           gptools.SquaredExponentialKernel(hyperprior=self.hp*self.hp*self.hp1, num_dim=self.num_dim)) # 3 is the dimention of x
+        self.all_gps = [gptools.GaussianProcess(
+                  gptools.SquaredExponentialKernel(hyperprior=self.hp*self.hp*self.hp1, num_dim=self.num_dim)) for i in range(self.Y.shape[1])]
+        # for dim in range(self.Y.shape[1]):
+        #     self.all_gps[dim].add_data(self.X, self.Y[:,dim])
             #self.all_gps[dim].optimize_hyperparameters(verbose=True)
         print(1)
     def grad_input(self, x, u): # get next states and grads
@@ -64,7 +65,7 @@ class gp_dynamics_dx(object):
         
             #all_gps = [self.gp for i in range(d1)]
             
-             
+
             Ft, new_x_t =[], []
             for dim in range(d1):
                 #print('dim ', d1, 'current dim', dim)
@@ -78,6 +79,8 @@ class gp_dynamics_dx(object):
                     new_x_t_1 = 1
                 elif new_x_t_1 < -1:
                     new_x_t_1 = 1
+                #TODO: add posterior sampling
+                np.random.multivariate_normal()
                 new_x_t.append(new_x_t_1)
  
                 if len(new_x_t) == d1:
@@ -85,7 +88,7 @@ class gp_dynamics_dx(object):
 
                 # Ft.append(grad_xu_t/1000)#scale for debug
                 #add clip
-                np.clip(grad_xu_t, -1, 1, grad_xu_t)
+                # np.clip(grad_xu_t, -1, 1, grad_xu_t)
                 Ft.append(grad_xu_t)
             
             batch_Ft.append(Ft)

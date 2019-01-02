@@ -183,8 +183,8 @@ def get_cost(T, u, C, c, cost, dynamics=None, x_init=None, x=None):
         if isinstance(cost, QuadCost):
             obj = 0.5*bquad(xut, C[t]) + bdot(xut, c[t])
         else:
-            #obj = cost(xut) #li
-            obj = 0.5*bquad(xut, C[t]) + bdot(xut, c[t])
+            obj = cost.get_cost(x[t].u[t])
+            # obj = 0.5*bquad(xut, C[t]) + bdot(xut, c[t])
         objs.append(obj)
     objs = torch.stack(objs, dim=0)
     total_obj = torch.sum(objs, dim=0)

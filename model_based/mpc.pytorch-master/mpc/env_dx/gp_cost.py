@@ -26,7 +26,7 @@ class GP_cost(object):
         self.gp_noise = gptools.GaussianProcess(self.k_SE, noise_k=self.k_noise)
         self.gp = gptools.GaussianProcess(
                   gptools.SquaredExponentialKernel(hyperprior=self.hp*self.hp, num_dim=self.num_dim))
-        self.gp.add_data(self.X, self.R) #add init data for gp
+        # self.gp.add_data(self.X, self.R) #add init data for gp
 
     def get_cost(self, x, u): #get costs, grads, hessians
         #print('input u of cost', u)
@@ -62,6 +62,8 @@ class GP_cost(object):
             xu_copy = [xu for i in range(d)]
             xu_copy_copy = [xu for i in range(d*d)]
             ct, ct_std = self.gp.predict(xu, n=0)
+            # TODO: add posterior sampling
+
             self.gp.add_data(xu, ct)
             #self.gp.optimize_hyperparameters(verbose=True)
             #add sample
@@ -69,8 +71,8 @@ class GP_cost(object):
             hess_xu_t_of_ct, err_hess_c_t = self.gp.predict(xu_copy_copy, n=H_flat)
             # grad_xu_t_of_ct = grad_xu_t_of_ct/1000 #scale for debug
             # hess_xu_t_of_ct = hess_xu_t_of_ct/1000 #scale for debug
-            np.clip(grad_xu_t_of_ct, -1, 1, grad_xu_t_of_ct)
-            np.clip(hess_xu_t_of_ct, -1, 1, hess_xu_t_of_ct)
+            # np.clip(grad_xu_t_of_ct, -1, 1, grad_xu_t_of_ct)
+            # np.clip(hess_xu_t_of_ct, -1, 1, hess_xu_t_of_ct)
             hess = np.reshape(hess_xu_t_of_ct, [d, d])
             #print('one hess shape', hess.shape)
             batch_Ct.append(ct)

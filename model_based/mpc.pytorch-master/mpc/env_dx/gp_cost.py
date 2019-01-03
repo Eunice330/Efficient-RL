@@ -62,7 +62,8 @@ class GP_cost(object):
             xu_copy = [xu for i in range(d)]
             xu_copy_copy = [xu for i in range(d*d)]
             ct, ct_std = self.gp.predict(xu, n=0)
-            # TODO: add posterior sampling
+            # posterior sampling
+            ct = np.random.normal(ct,ct_std,1)
 
             self.gp.add_data(xu, ct)
             #self.gp.optimize_hyperparameters(verbose=True)

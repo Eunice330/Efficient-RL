@@ -79,8 +79,8 @@ class gp_dynamics_dx(object):
                     new_x_t_1 = 1
                 elif new_x_t_1 < -1:
                     new_x_t_1 = 1
-                #TODO: add posterior sampling
-                np.random.multivariate_normal()
+                # posterior sampling
+                [new_x_t_1] = np.random.normal(new_x_t_1,new_xu_t_1_std[0],1)
                 new_x_t.append(new_x_t_1)
  
                 if len(new_x_t) == d1:

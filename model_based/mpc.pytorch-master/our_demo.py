@@ -22,7 +22,7 @@ import copy
 
 params = torch.tensor((10., 1., 1.))
 #dx = pendulum.PendulumDx(params, simple=True)
-n_batch, T, mpc_T = 1, 20, 10
+n_batch, T, mpc_T = 1, 20, 3
 n_state= 3
 n_ctrl=1
 
@@ -43,8 +43,8 @@ for i in range(30):
     u = env.action_space.sample()
     new_x, new_cost, done, info = env.step(u)
     xu = np.concatenate((x.squeeze(),u),0)
-    for i in range(new_x.shape[0]):
-        dx.all_gps[i].add_data(xu, new_x[i])
+    for j in range(new_x.shape[0]):
+        dx.all_gps[j].add_data(xu, new_x[j])
     cost.gp.add_data(xu, new_cost)
     x = new_x
 
@@ -86,9 +86,9 @@ for episode in range(num_episode):
             train_r = train_r
         )(x, cost_for_plan, dx_for_plan)
         print('times', t, 'x', x)
-        print('norminal states', nominal_states)
+        # print('norminal states', nominal_states)
         next_action = nominal_actions[0]
-        print('next action', next_action)
+        # print('next action', next_action)
         u_init = torch.cat((nominal_actions[1:], torch.zeros(1, n_batch, n_ctrl)), dim=0)
         u_init[-2] = u_init[-3]
         # _, x = dx.grad_input(x, next_action)

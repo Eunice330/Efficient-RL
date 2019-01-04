@@ -19,14 +19,12 @@ from IPython.display import HTML
 from tqdm import tqdm
 import time
 import copy
-# TODO:add env sample from reset
+
 params = torch.tensor((10., 1., 1.))
 #dx = pendulum.PendulumDx(params, simple=True)
-n_batch, T, mpc_T = 1, 10, 3
+n_batch, T, mpc_T = 1, 20, 10
 n_state= 3
 n_ctrl=1
-
-
 
 train_x = np.random.random((n_batch, n_state+n_ctrl))
 train_y = np.random.random((n_batch, n_state))
@@ -57,7 +55,7 @@ for i in range(30):
 t_dir = tempfile.mkdtemp()
 print('Tmp dir: {}'.format(t_dir))
 
-num_episode = 10
+num_episode = 100
 total_cost = []
 for episode in range(num_episode):
     # start of a new episode

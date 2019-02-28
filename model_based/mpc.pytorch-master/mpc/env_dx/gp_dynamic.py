@@ -83,8 +83,8 @@ class gp_dynamics_dx(object):
                 [new_x_t_1] = np.random.normal(new_x_t_1,new_xu_t_1_std[0],1)
                 new_x_t.append(new_x_t_1)
  
-                if len(new_x_t) == d1:
-                   self.all_gps[dim].add_data(xu, new_x_t[dim]) #add new generated data on each dim
+                # if len(new_x_t) == d1:
+                #    self.all_gps[dim].add_data(xu, new_x_t[dim]) #add new generated data on each dim
 
                 # Ft.append(grad_xu_t/1000)#scale for debug
                 #add clip

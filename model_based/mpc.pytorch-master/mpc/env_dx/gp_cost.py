@@ -41,7 +41,7 @@ class GP_cost(object):
             xu = np.concatenate((x[b],u[b]),0)
             d = xu.shape[0]
             d1 = x.shape[1]
-            
+
             index=[]
             for i in range(d):
                 for j in range(d):
@@ -65,7 +65,7 @@ class GP_cost(object):
             # posterior sampling
             ct = np.random.normal(ct,ct_std,1)
 
-            self.gp.add_data(xu, ct)
+            # self.gp.add_data(xu, ct)
             #self.gp.optimize_hyperparameters(verbose=True)
             #add sample
             grad_xu_t_of_ct, err_grad_c_t = self.gp.predict(xu_copy, n=flat)

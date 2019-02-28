@@ -22,7 +22,7 @@ import copy
 
 params = torch.tensor((10., 1., 1.))
 #dx = pendulum.PendulumDx(params, simple=True)
-n_batch, T, mpc_T = 1, 20, 3
+n_batch, T, mpc_T = 1, 20, 5
 n_state= 3
 n_ctrl=1
 

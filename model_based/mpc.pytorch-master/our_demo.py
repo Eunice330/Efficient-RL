@@ -22,7 +22,7 @@ import copy
 
 params = torch.tensor((10., 1., 1.))
 #dx = pendulum.PendulumDx(params, simple=True)
-n_batch, T, mpc_T = 1, 20, 5
+n_batch, T, mpc_T = 1, 20, 10
 n_state= 3
 n_ctrl=1
 
@@ -55,7 +55,7 @@ for i in range(30):
 t_dir = tempfile.mkdtemp()
 print('Tmp dir: {}'.format(t_dir))
 
-num_episode = 100
+num_episode = 1000
 total_cost = []
 for episode in range(num_episode):
     # start of a new episode
